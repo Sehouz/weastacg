@@ -1,16 +1,65 @@
 @import "tailwindcss" source(".");
 
 @theme {
-	--font-sans:
-		"Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-brand: #5B9BD5;
+  --color-brand-light: #AEE1FF;
+  --color-accent: #FDBB7D;
+  --color-accent-hover: #E59A5B;
+  --color-highlight-yellow: #FFE066;
+  --color-highlight-pink: #FFB6C1;
+  --color-text-main: #591818;
+  --color-text-light: #7F8C8D;
+  --color-bg-body: #F4F9FD;
+  --color-bg-card: #FFFFFF;
+  --color-pop-blue: #8CD6FF;
+  --color-pop-pink: #FF99CC;
+  --color-pop-orange: #FF8C42;
+  --color-line: #7A2020;
 }
 
 html,
 body {
-	@apply bg-white dark:bg-gray-950;
+  @apply bg-bg-body text-text-main;
+}
 
-	@media (prefers-color-scheme: dark) {
-		color-scheme: dark;
-	}
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-text-main);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.8); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
 }
