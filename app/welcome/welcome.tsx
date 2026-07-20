@@ -238,13 +238,15 @@ export function Welcome({ recruitment }: { recruitment: RecruitmentConfig }) {
 
         <div className="relative max-w-6xl mx-auto px-6 py-24 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 text-center md:text-left animate-fade-in-up">
-            {recruitment.enabled && (
-              <div className="inline-block bg-accent text-text-main text-sm font-bold px-4 py-1.5 rounded-full mb-4 animate-pulse">
-                🔥 {recruitment.year} 招新进行中
-              </div>
-            )}
-            <div className="inline-block bg-highlight-yellow/60 text-text-main text-sm font-bold px-4 py-1.5 rounded-full mb-6">
-              欢迎来到 ✨
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
+              {recruitment.enabled && (
+                <span className="inline-block bg-accent text-text-main text-sm font-bold px-4 py-1.5 rounded-full animate-pulse">
+                  🔥 {recruitment.year} 招新进行中
+                </span>
+              )}
+              <span className="inline-block bg-highlight-yellow/60 text-text-main text-sm font-bold px-4 py-1.5 rounded-full">
+                欢迎来到 ✨
+              </span>
             </div>
             <h1 className="text-5xl md:text-7xl font-extrabold text-text-main leading-tight mb-4">
               东西<span className="text-brand">动漫</span>社
