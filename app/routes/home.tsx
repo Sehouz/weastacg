@@ -10,6 +10,16 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
-  return <Welcome />;
+export function loader({ context }: Route.LoaderArgs) {
+  return {
+    recruitment: {
+      enabled: context.cloudflare.env.RECRUITMENT_ENABLED === "true",
+      qqGroup: context.cloudflare.env.RECRUITMENT_QQ_GROUP || "",
+      year: parseInt(context.cloudflare.env.RECRUITMENT_YEAR || "0", 10),
+    },
+  };
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  return <Welcome recruitment={loaderData.recruitment} />;
 }

@@ -1,5 +1,19 @@
 import { useState, useEffect } from "react";
 
+/* ===== 招新配置 =====
+ * 通过 Cloudflare Wrangler vars 控制（见 wrangler.json）
+ * RECRUITMENT_ENABLED: "true" 启用 / "false" 关闭
+ * RECRUITMENT_QQ_GROUP: 迎新QQ群号
+ * RECRUITMENT_YEAR: 招新年份
+ */
+type RecruitmentConfig = {
+  enabled: boolean;
+  qqGroup: string;
+  year: number;
+};
+
+/* ===== 内容数据 ===== */
+
 const aboutCards = [
   {
     icon: "💙",
@@ -123,8 +137,49 @@ const sparkles = [
   { top: "15%", left: "45%", delay: "1.2s", size: "0.8rem" },
 ];
 
-export function Welcome() {
+/* ===== 招新顶部横幅 ===== */
+
+const RECRUITMENT_BANNER_KEY = "recruitment_banner_dismissed";
+const BANNER_HEIGHT = 44; // px
+
+function RecruitmentBanner({ recruitment, onDismiss }: { recruitment: RecruitmentConfig; onDismiss: () => void }) {
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[60] bg-accent text-text-main" style={{ height: BANNER_HEIGHT }}>
+      <div className="h-full max-w-6xl mx-auto px-4 flex items-center justify-center gap-3 text-sm font-bold">
+        <span className="bg-white/60 rounded-full px-2 py-0.5 text-xs">NEW</span>
+        <span>
+          {recruitment.year} 年招新正在进行中！迎新QQ群：
+          <span className="text-lg tracking-wider mx-1">{recruitment.qqGroup}</span>
+        </span>
+        <a href="#join" className="underline underline-offset-2 hover:opacity-80">
+          立即加入 →
+        </a>
+        <button
+          onClick={() => {
+            localStorage.setItem(RECRUITMENT_BANNER_KEY, "true");
+            onDismiss();
+          }}
+          className="ml-2 p-1 hover:bg-text-main/10 rounded transition-colors"
+          aria-label="关闭"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ===== 主组件 ===== */
+
+export function Welcome({ recruitment }: { recruitment: RecruitmentConfig }) {
   const [scrolled, setScrolled] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(true);
+
+  useEffect(() => {
+    setBannerDismissed(localStorage.getItem(RECRUITMENT_BANNER_KEY) === "true");
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -132,15 +187,21 @@ export function Welcome() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const showBanner = recruitment.enabled && !bannerDismissed;
+  const navTop = showBanner ? `${BANNER_HEIGHT}px` : "0px";
+
   return (
     <div className="min-h-screen">
+      {showBanner && <RecruitmentBanner recruitment={recruitment} onDismiss={() => setBannerDismissed(true)} />}
+
       {/* Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-md"
             : "bg-transparent"
         }`}
+        style={{ top: navTop }}
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -159,7 +220,7 @@ export function Welcome() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-brand-light/40 via-bg-body to-accent/20">
+      <section className={`relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-brand-light/40 via-bg-body to-accent/20`} style={{ paddingTop: showBanner ? `${BANNER_HEIGHT}px` : 0 }}>
         {sparkles.map((s, i) => (
           <span
             key={i}
@@ -177,6 +238,11 @@ export function Welcome() {
 
         <div className="relative max-w-6xl mx-auto px-6 py-24 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 text-center md:text-left animate-fade-in-up">
+            {recruitment.enabled && (
+              <div className="inline-block bg-accent text-text-main text-sm font-bold px-4 py-1.5 rounded-full mb-4 animate-pulse">
+                🔥 {recruitment.year} 招新进行中
+              </div>
+            )}
             <div className="inline-block bg-highlight-yellow/60 text-text-main text-sm font-bold px-4 py-1.5 rounded-full mb-6">
               欢迎来到 ✨
             </div>
@@ -361,23 +427,41 @@ export function Welcome() {
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-highlight-yellow/30 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
 
         <div className="relative max-w-3xl mx-auto px-6 text-center">
-          <span className="inline-block text-5xl mb-6">🎉</span>
-          <h2 className="text-4xl font-extrabold text-white mb-4">加入我们</h2>
-          <p className="text-white/80 text-lg mb-2 leading-relaxed">
-            入社无需面试，填表即可加入！
-          </p>
-          <p className="text-white/60 text-sm mb-8 leading-relaxed max-w-md mx-auto">
-            正式入社时间在每学期初的招新期间，在此之前欢迎先加入外联群聊提前认识大家！
-          </p>
+          <span className="inline-block text-5xl mb-6">{recruitment.enabled ? "🔥" : "🎉"}</span>
+          <h2 className="text-4xl font-extrabold text-white mb-4">
+            {recruitment.enabled ? `${recruitment.year} 招新进行中` : "加入我们"}
+          </h2>
 
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-8">
-            <div className="text-white/60 text-sm">外联群聊 QQ</div>
-            <div className="text-2xl font-extrabold text-white tracking-wider">1023073775</div>
-          </div>
-
-          <p className="text-white/40 text-xs">
-            * 正式入社报名在每年秋季学期初的百团大战期间开放，请关注社团动态获取最新消息
-          </p>
+          {recruitment.enabled ? (
+            <>
+              <p className="text-white/80 text-lg mb-6 leading-relaxed">
+                入社无需面试，填表即可加入！欢迎加入迎新QQ群了解更多：
+              </p>
+              <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-4">
+                <div className="text-white/60 text-sm">迎新QQ群</div>
+                <div className="text-2xl font-extrabold text-white tracking-wider">{recruitment.qqGroup}</div>
+              </div>
+              <p className="text-white/50 text-xs">
+                百团大战期间开放正式入社报名，请关注社团动态获取最新消息
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-white/80 text-lg mb-2 leading-relaxed">
+                入社无需面试，填表即可加入！
+              </p>
+              <p className="text-white/60 text-sm mb-8 leading-relaxed max-w-md mx-auto">
+                正式入社时间在每年秋季学期初的招新期间，在此之前欢迎先加入外联群聊提前认识大家！
+              </p>
+              <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-8">
+                <div className="text-white/60 text-sm">外联群聊 QQ</div>
+                <div className="text-2xl font-extrabold text-white tracking-wider">1023073775</div>
+              </div>
+              <p className="text-white/40 text-xs">
+                * 正式入社报名在每年秋季学期初的百团大战期间开放，请关注社团动态获取最新消息
+              </p>
+            </>
+          )}
         </div>
       </section>
 

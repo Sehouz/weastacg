@@ -10,4 +10,9 @@
     "enabled": true
   },
   "upload_source_maps": true,
+  "vars": {
+    "RECRUITMENT_ENABLED": "true",
+    "RECRUITMENT_QQ_GROUP": "1043426120",
+    "RECRUITMENT_YEAR": "2026"
+  }
 }

@@ -6,7 +6,9 @@ declare namespace Cloudflare {
 		mainModule: typeof import("./workers/app");
 	}
 	interface Env {
-		VALUE_FROM_CLOUDFLARE: "Hello from Cloudflare";
+		RECRUITMENT_ENABLED: string;
+		RECRUITMENT_QQ_GROUP: string;
+		RECRUITMENT_YEAR: string;
 	}
 }
 interface Env extends Cloudflare.Env {}
@@ -14,7 +16,7 @@ type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
 declare namespace NodeJS {
-	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "VALUE_FROM_CLOUDFLARE">> {}
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "RECRUITMENT_ENABLED" | "RECRUITMENT_QQ_GROUP" | "RECRUITMENT_YEAR">> {}
 }
 
 // Begin runtime types
