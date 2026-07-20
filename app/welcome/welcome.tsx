@@ -145,21 +145,28 @@ const BANNER_HEIGHT = 44; // px
 function RecruitmentBanner({ recruitment, onDismiss }: { recruitment: RecruitmentConfig; onDismiss: () => void }) {
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] bg-accent text-text-main" style={{ height: BANNER_HEIGHT }}>
-      <div className="h-full max-w-6xl mx-auto px-4 flex items-center justify-center gap-3 text-sm font-bold">
-        <span className="bg-white/60 rounded-full px-2 py-0.5 text-xs">NEW</span>
-        <span>
+      <div className="h-full max-w-6xl mx-auto px-3 sm:px-4 flex items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-bold">
+        <span className="bg-white/60 rounded-full px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs shrink-0">NEW</span>
+        <span className="hidden sm:inline">
           {recruitment.year} 年招新正在进行中！迎新QQ群：
-          <span className="text-lg tracking-wider mx-1">{recruitment.qqGroup}</span>
+          <span className="text-base sm:text-lg tracking-wider mx-1">{recruitment.qqGroup}</span>
         </span>
-        <a href="#join" className="underline underline-offset-2 hover:opacity-80">
+        <span className="sm:hidden">
+          {recruitment.year} 招新中！QQ群
+          <span className="text-sm tracking-wider mx-0.5">{recruitment.qqGroup}</span>
+        </span>
+        <a href="#join" className="underline underline-offset-2 hover:opacity-80 shrink-0 hidden sm:inline">
           立即加入 →
+        </a>
+        <a href="#join" className="underline underline-offset-2 hover:opacity-80 shrink-0 sm:hidden">
+          加入 →
         </a>
         <button
           onClick={() => {
             localStorage.setItem(RECRUITMENT_BANNER_KEY, "true");
             onDismiss();
           }}
-          className="ml-2 p-1 hover:bg-text-main/10 rounded transition-colors"
+          className="p-0.5 sm:p-1 hover:bg-text-main/10 rounded transition-colors shrink-0"
           aria-label="关闭"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
