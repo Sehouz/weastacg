@@ -285,7 +285,7 @@ export function Welcome({ recruitment }: { recruitment: RecruitmentConfig }) {
               />
               <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-1.5 border border-brand/30 shadow-md text-center">
                 <span className="text-sm font-bold text-brand">社娘 · 酱酱酱</span>
-                <span className="block text-xs text-text-light mt-0.5">画师 yonnana</span>
+                <span className="block text-xs text-text-light mt-0.5">画师 佐咲</span>
               </div>
             </div>
           </div>
