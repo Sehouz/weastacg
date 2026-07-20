@@ -8,6 +8,7 @@ declare namespace Cloudflare {
 	interface Env {
 		RECRUITMENT_ENABLED: string;
 		RECRUITMENT_QQ_GROUP: string;
+		RECRUITMENT_QQ_LINK: string;
 		RECRUITMENT_YEAR: string;
 	}
 }
@@ -16,7 +17,7 @@ type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
 declare namespace NodeJS {
-	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "RECRUITMENT_ENABLED" | "RECRUITMENT_QQ_GROUP" | "RECRUITMENT_YEAR">> {}
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "RECRUITMENT_ENABLED" | "RECRUITMENT_QQ_GROUP" | "RECRUITMENT_QQ_LINK" | "RECRUITMENT_YEAR">> {}
 }
 
 // Begin runtime types

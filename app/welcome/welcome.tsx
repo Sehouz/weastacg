@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 type RecruitmentConfig = {
   enabled: boolean;
   qqGroup: string;
+  qqLink: string;
   year: number;
 };
 
@@ -155,10 +156,10 @@ function RecruitmentBanner({ recruitment, onDismiss }: { recruitment: Recruitmen
           {recruitment.year} 招新中！QQ群
           <span className="text-sm tracking-wider mx-0.5">{recruitment.qqGroup}</span>
         </span>
-        <a href="#join" className="underline underline-offset-2 hover:opacity-80 shrink-0 hidden sm:inline">
+        <a href={recruitment.qqLink} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:opacity-80 shrink-0 hidden sm:inline">
           立即加入 →
         </a>
-        <a href="#join" className="underline underline-offset-2 hover:opacity-80 shrink-0 sm:hidden">
+        <a href={recruitment.qqLink} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:opacity-80 shrink-0 sm:hidden">
           加入 →
         </a>
         <button
@@ -448,7 +449,25 @@ export function Welcome({ recruitment }: { recruitment: RecruitmentConfig }) {
               </p>
               <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-4">
                 <div className="text-white/60 text-sm">迎新QQ群</div>
-                <div className="text-2xl font-extrabold text-white tracking-wider">{recruitment.qqGroup}</div>
+                <a
+                  href={recruitment.qqLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-2xl font-extrabold text-white tracking-wider hover:underline"
+                >
+                  {recruitment.qqGroup}
+                </a>
+                <a
+                  href={recruitment.qqLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 bg-accent text-text-main font-bold px-4 py-2 rounded-full hover:bg-accent-hover transition-all text-sm"
+                >
+                  加入群聊
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </a>
               </div>
               <p className="text-white/50 text-xs">
                 百团大战期间开放正式入社报名，请关注社团动态获取最新消息

@@ -13,6 +13,7 @@
   "vars": {
     "RECRUITMENT_ENABLED": "true",
     "RECRUITMENT_QQ_GROUP": "1043426120",
-    "RECRUITMENT_YEAR": "2026"
+    "RECRUITMENT_YEAR": "2026",
+    "RECRUITMENT_QQ_LINK": "https://qm.qq.com/q/8aJKV2lR1m"
   }
 }

@@ -15,6 +15,7 @@ export function loader({ context }: Route.LoaderArgs) {
     recruitment: {
       enabled: context.cloudflare.env.RECRUITMENT_ENABLED === "true",
       qqGroup: context.cloudflare.env.RECRUITMENT_QQ_GROUP || "",
+      qqLink: context.cloudflare.env.RECRUITMENT_QQ_LINK || "",
       year: parseInt(context.cloudflare.env.RECRUITMENT_YEAR || "0", 10),
     },
   };
